@@ -5,6 +5,7 @@ from sanic.request import Request
 from sanic.response import BaseHTTPResponse, json
 
 from configs.config import ApplicationConfig
+from context import Context
 
 
 class SanicEndpoint:
@@ -12,7 +13,7 @@ class SanicEndpoint:
     async def __call__(self, *args, **kwargs) -> BaseHTTPResponse:
         return await self.handler(*args, **kwargs)
 
-    def __init__(self, config: ApplicationConfig, uri: str, methods: Iterable, *args, **kwargs):
+    def __init__(self, config: ApplicationConfig, context: Context, uri: str, methods: Iterable, *args, **kwargs):
         self.config = config
         self.uri = uri
         self.methods = methods
