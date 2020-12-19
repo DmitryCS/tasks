@@ -8,7 +8,7 @@ def main():
     app.run(
         host=config.sanic.host,
         port=config.sanic.port,
-        workers=config.sanic.workers,
+        workers=config.sanic.workers,   # number of application instances to be saved to the server (that will work)
         debug=config.sanic.debug
     )
 

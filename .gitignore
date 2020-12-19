@@ -11,4 +11,3 @@ transport/__pycache__/
 transport/sanic/__pycache__/
 transport/sanic/endpoints/__pycache__/
 venv/
-.env
