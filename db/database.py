@@ -12,7 +12,8 @@ class DBSession:
         return self._session.query(*args, **kwargs)
 
     def close_session(self):
-        self._session.close() 
+        self._session.close()
+
 
 class DataBase:
     connection: Engine
