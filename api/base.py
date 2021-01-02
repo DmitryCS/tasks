@@ -1,13 +1,7 @@
 from marshmallow import Schema, ValidationError, EXCLUDE
 from sanic.exceptions import SanicException
 
-
-class ApiValidationException(SanicException):
-    status = 400
-
-
-class ApiResponseValidationException(SanicException):
-    status = 500
+from api.exceptions import ApiValidationException, ApiResponseValidationException
 
 
 class RequestDto:
@@ -39,7 +33,7 @@ class ResponseDto:
         #         attr = getattr(obj, prop)
         #         if not callable(attr):
         #             valid_data['prop'] = attr
-        # self._data = valid_data
+
         properties = {
             prop: value
             for prop in dir(obj)

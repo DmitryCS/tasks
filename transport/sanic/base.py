@@ -17,6 +17,7 @@ class SanicEndpoint:
         self.config = config
         self.uri = uri
         self.methods = methods
+        self.context = context
         self.__name__ = self.__class__.__name__
 
     @staticmethod
@@ -29,6 +30,7 @@ class SanicEndpoint:
                 'message': message or HTTPStatus(status).phrase,
                 'error_code': error_code or status,
             }
+
         return json(body=body, status=status)
 
     @staticmethod
