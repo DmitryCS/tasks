@@ -7,10 +7,13 @@ from api.base import ResponseDto
 
 class ResponseEmployeeDtoSchema(Schema):
     id = fields.Int(required=True)
+    login = fields.Str(required=True)
     created_at = fields.DateTime(required=True)
     update_at = fields.DateTime(required=True)
     first_name = fields.Str(required=True)
     last_name = fields.Str(required=True)
+    position = fields.Str(required=True, allow_none=True)
+    department = fields.Str(required=True, allow_none=True)
 
     @pre_load
     @post_load

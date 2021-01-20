@@ -13,7 +13,7 @@ def generate_hash(pwd: str) -> bytes:
         raise GeneratePasswordHashException(str(e))
 
 
-def check_hash(pwd: str, hsh: bytes) -> bool:
+def check_hash(pwd: str, hsh: bytes) -> None:
     try:
         result = bcrypt.checkpw(
             password=pwd.encode(),
@@ -21,7 +21,8 @@ def check_hash(pwd: str, hsh: bytes) -> bool:
         )
     except (TypeError, ValueError) as e:
         raise CheckPasswordHashException(str(e))
-    return result
+    if not result:
+        raise CheckPasswordHashException
 
 
 if __name__ == '__main__':
