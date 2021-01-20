@@ -10,3 +10,8 @@ class RequestAuthEmployeeDtoSchema(Schema):
 
 class RequestAuthEmployeeDto(RequestDto, RequestAuthEmployeeDtoSchema):
     __schema__ = RequestAuthEmployeeDtoSchema
+
+
+class AuthResponseObject:
+    def __init__(self, token):
+        self.Authorization = token

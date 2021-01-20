@@ -26,25 +26,32 @@ class RequestDto:
 class ResponseDto:
     __schema__: Schema
 
-    def __init__(self, obj: object):
+    def __init__(self, obj: object, many: bool = False):
         # properties = {}
         # for prop in dir(obj):
         #     if not prop.startswith('_') and not prop.endswith('_'):
         #         attr = getattr(obj, prop)
         #         if not callable(attr):
         #             valid_data['prop'] = attr
+        if many:
+            properties = [self.parse_obj(o) for o in obj]
+        else:
+            properties = self.parse_obj(obj)
 
-        properties = {
+        try:
+            self._data = self.__schema__(unknown=EXCLUDE, many=many).load(properties) #, many=many
+        except ValidationError as error:
+            raise ApiResponseValidationException(error.messages)
+
+    @staticmethod
+    def parse_obj(obj: object) -> dict:
+        return {
             prop: value
             for prop in dir(obj)
             if not prop.startswith('_')
                and not prop.endswith('_')
                and not callable(value := getattr(obj, prop))
         }
-        try:
-            self._data = self.__schema__(unknown=EXCLUDE).load(properties)
-        except ValidationError as error:
-            raise ApiResponseValidationException(error.messages)
 
     def dump(self) -> dict:
         return self._data
