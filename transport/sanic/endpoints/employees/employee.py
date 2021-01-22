@@ -13,8 +13,11 @@ from transport.sanic.exceptions import SanicEmployeeNotFound, SanicDBException
 class EmployeeEndpoint(BaseEndpoint):
 
     async def method_patch(
-            self, request: Request, body: dict, session: DBSession, eid: int, *args, **kwargs
+            self, request: Request, body: dict, session: DBSession, eid: int, token: dict, *args, **kwargs
     ) -> BaseHTTPResponse:
+
+        if token.get('eid') != eid:
+            return await self.make_response_json(status=403)
 
         request_model = RequestPatchEmployeeDto(body)
 
@@ -35,11 +38,11 @@ class EmployeeEndpoint(BaseEndpoint):
     async def method_delete(
             self, request: Request, body: dict, session: DBSession, eid: int, *args, **kwargs
     ) -> BaseHTTPResponse:
-        # eid = kwargs['eid']
+
         try:
             employee = employee_queries.delete_employee(session, eid)
         except DBEmployeeNotExistsException as e:
-            raise SanicDBException(str(e))
+            raise SanicEmployeeNotFound('Employee not found')
 
         try:
             session.commit_session()

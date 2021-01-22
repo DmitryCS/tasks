@@ -12,8 +12,18 @@ from transport.sanic.exceptions import SanicAuthException
 
 class SanicEndpoint:
 
-    async def __call__(self, *args, **kwargs) -> BaseHTTPResponse:
-        return await self.handler(*args, **kwargs)
+    async def __call__(self, request: Request, *args, **kwargs) -> BaseHTTPResponse:
+
+        if self.auth_required:
+            try:
+                token = {
+                   'token': self.import_body_auth(request)
+                }
+            except SanicAuthException as e:
+                return await self.make_response_json(status=e.status_code)
+            else:
+                kwargs.update(token)
+        return await self.handler(request, *args, **kwargs)
 
     def __init__(
             self,
@@ -69,11 +79,11 @@ class SanicEndpoint:
     async def handler(self, request: Request, *args, **kwargs) -> BaseHTTPResponse:
         body = {}
 
-        if self.auth_required:
-            try:
-                body.update(self.import_body_auth(request))
-            except SanicAuthException as e:
-                return await self.make_response_json(status=e.status_code)
+        # if self.auth_required:
+        #     try:
+        #         body.update(self.import_body_auth(request))
+        #     except SanicAuthException as e:
+        #         return await self.make_response_json(status=e.status_code)
 
         body.update(self.import_body_json(request))
         body.update(self.import_body_headers(request))

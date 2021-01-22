@@ -10,7 +10,7 @@ from transport.sanic.endpoints import BaseEndpoint
 class AllEmployeeEndpoint(BaseEndpoint):
 
     async def method_get(
-            self, request: Request, body: dict, session: DBSession, *args, **kwargs
+            self, request: Request, body: dict, session: DBSession, token: dict, *args, **kwargs
     ) -> BaseHTTPResponse:
 
         db_employee = employee_queries.get_employees(session)

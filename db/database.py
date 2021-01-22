@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError, DataError
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, Query
 
 from db.exceptions import DBIntegrityException, DBDataException
 from db.models import BaseModel, DBEmployee
@@ -14,8 +14,11 @@ class DBSession:
     def __init__(self, session: Session):
         self._session = session
 
-    def query(self, *args, **kwargs):
+    def query(self, *args, **kwargs) -> Query:
         return self._session.query(*args, **kwargs)
+
+    def employees(self) -> Query:
+        return self.query(DBEmployee).filter(DBEmployee.is_delete == 0)
 
     def close_session(self):
         self._session.close()
@@ -29,13 +32,13 @@ class DBSession:
             raise DBDataException(e)
 
     def get_employee_by_login(self, login: str) -> DBEmployee:
-        return self._session.query(DBEmployee).filter(DBEmployee.login == login).first()
+        return self.employees().filter(DBEmployee.login == login).first()
 
     def get_employee_by_id(self, eid: int) -> DBEmployee:
-        return self._session.query(DBEmployee).filter(DBEmployee.id == eid).first()
+        return self.employees().filter(DBEmployee.id == eid).first()
 
     def get_employee_all(self) -> List[DBEmployee]:
-        return self._session.query(DBEmployee).filter(DBEmployee.is_delete == 0).all()
+        return self.employees().all()
 
     def commit_session(self, need_close: bool = False):
         try:
