@@ -21,6 +21,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./init.sql:/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5433:5432"
