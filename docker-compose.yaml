@@ -5,7 +5,7 @@ services:
     build: .
     container_name: tasks-app
     ports:
-    - "8000:8000"
+      - "8000:8000"
     command: sh -c "cd /tasks
              && alembic upgrade head
              && python main.py"
@@ -20,3 +20,7 @@ services:
     container_name: tasks-db
     env_file:
       - .env
+    volumes:
+      - ./init.sql:/init.sql
+    ports:
+      - "5433:5432"

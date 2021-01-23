@@ -1,8 +1,8 @@
 """add employee
 
-Revision ID: 1ef0413706c5
+Revision ID: 4281c9129b1c
 Revises: 
-Create Date: 2021-01-20 12:22:48.355532
+Create Date: 2021-01-23 15:31:16.587844
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1ef0413706c5'
+revision = '4281c9129b1c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('update_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('login', sa.VARCHAR(length=20), nullable=False),
-    sa.Column('password', sa.VARBINARY(), nullable=False),
+    sa.Column('password', sa.LargeBinary(), nullable=False),
     sa.Column('first_name', sa.VARCHAR(length=50), nullable=True),
     sa.Column('last_name', sa.VARCHAR(length=50), nullable=True),
     sa.Column('is_delete', sa.BOOLEAN(), nullable=False),

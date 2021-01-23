@@ -1,5 +1,6 @@
 from typing import List
 
+from sqlalchemy import false
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import IntegrityError, DataError
 from sqlalchemy.orm import sessionmaker, Session, Query
@@ -18,7 +19,7 @@ class DBSession:
         return self._session.query(*args, **kwargs)
 
     def employees(self) -> Query:
-        return self.query(DBEmployee).filter(DBEmployee.is_delete == 0)
+        return self.query(DBEmployee).filter(DBEmployee.is_delete == false())
 
     def close_session(self):
         self._session.close()

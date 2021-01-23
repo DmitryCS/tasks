@@ -9,11 +9,18 @@ class SQLiteConfig:
     url = rf'sqlite:///{name}'
 
 
+# class PostgresConfig:
+#     name = os.getenv('POSTGRES_NAME', 'tasks')
+#     user = os.getenv('POSTGRES_USER', 'admin')
+#     password = os.getenv('POSTGRES_PASSWORD', 'qwerty')
+#     host = os.getenv('POSTGRES_HOST', 'tasks-db')
+#     port = os.getenv('POSTGRES_PORT', '5432')
+#     url = rf'postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}'
+
 class PostgresConfig:
     name = os.getenv('POSTGRES_NAME', 'tasks')
     user = os.getenv('POSTGRES_USER', 'admin')
     password = os.getenv('POSTGRES_PASSWORD', 'qwerty')
-    host = os.getenv('POSTGRES_HOST', 'tasks-db')
+    host = os.getenv('POSTGRES_HOST', '0.0.0.0')
     port = os.getenv('POSTGRES_PORT', '5432')
     url = rf'postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}'
-
